@@ -1,8 +1,8 @@
 package se.meldrum.machine.db.models
 
 import org.joda.time.DateTime
+import com.github.tototoshi.slick.PostgresJodaSupport._
 import slick.driver.PostgresDriver.api._
-
 
 case class Task(title: String,
                 description: String,
