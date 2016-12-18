@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
   "org.joda" % "joda-convert" % "1.7",
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc4",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
+  "ru.yandex.qatools.embed" % "postgresql-embedded" % "1.16" % "test",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test"
     exclude("org.scala-lang.modules", "scala-xml_2.11")
 )
