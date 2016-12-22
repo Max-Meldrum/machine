@@ -8,7 +8,7 @@ case class Task(title: String,
                 description: String,
                 deadline: DateTime,
                 priority: String,
-                userID: Option[Int])
+                userID: Option[Int] = None)
 
 
 class Tasks(tag: Tag) extends Table[Task](tag, "tasks") {
