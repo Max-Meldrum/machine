@@ -5,7 +5,6 @@ import se.meldrum.machine.db.dao.UserDao
 import se.meldrum.machine.db.models.User
 import se.meldrum.machine.http.UserCreation
 import slick.driver.PostgresDriver.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserRoute(implicit db: Database) {
@@ -22,6 +21,7 @@ class UserRoute(implicit db: Database) {
       path("create") {
         post {
           entity(as[UserCreation]) { user=>
+            // Hash the password before inserting it
             val u = User(None, user.name, user.password, user.email)
             // Getting problems on duplicated user name "FIX"
             onSuccess(dao.create(u).map(_.id)) {

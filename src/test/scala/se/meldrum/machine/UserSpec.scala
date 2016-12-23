@@ -16,13 +16,13 @@ class UserSpec extends BaseSpec {
       }
     }
 
-    "get a list of empty users when there are none in db" in {
+    "confirm that there is no test user when db is empty" in {
       Get("/v1/user") ~> route ~> check {
         responseAs[String].contains("testuser") shouldEqual false
       }
     }
 
-    "be able to create user" in {
+    "be able to create test user" in {
       val jsonRequest = ByteString(
         s"""
            |{
@@ -40,11 +40,10 @@ class UserSpec extends BaseSpec {
 
       postRequest ~> route ~> check {
         responseAs[String] shouldEqual "User created"
-
       }
     }
 
-    "be able to retreive users after one has been inserted" in {
+    "be able to retreive test user when it has been inserted" in {
       Get("/v1/user") ~> route ~> check {
         responseAs[String].contains("testuser") shouldEqual true
       }
