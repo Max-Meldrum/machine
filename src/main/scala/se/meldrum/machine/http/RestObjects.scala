@@ -13,3 +13,5 @@ case class UserCreation(name: String, password: String, email: String) {
   require(email.length < 50 && email.contains("@"))
 }
 
+case class UserNames(names: Seq[String])
+

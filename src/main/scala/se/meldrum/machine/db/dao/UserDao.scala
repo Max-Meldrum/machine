@@ -1,8 +1,10 @@
 package se.meldrum.machine.db.dao
 
 import se.meldrum.machine.db.models.{User, Users}
+import se.meldrum.machine.http.UserNames
 import slick.lifted.TableQuery
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
@@ -19,7 +21,8 @@ class UserDao(implicit db: Database) {
     db.run(dbAction.asTry)
   }
 
-  def getUserNames(): Future[Seq[String]] = db
+  def getUserNames(): Future[UserNames] = db
     .run(users.result)
     .map(_.map(_.name))
+    .map(f => UserNames(f))
 }

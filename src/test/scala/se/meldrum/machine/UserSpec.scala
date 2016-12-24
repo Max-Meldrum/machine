@@ -2,10 +2,12 @@ package se.meldrum.machine
 
 import akka.http.scaladsl.model._
 import akka.util.ByteString
-
+import akka.http.scaladsl.unmarshalling.Unmarshaller._
+import se.meldrum.machine.http.UserNames
 
 class UserSpec extends BaseSpec {
 
+  import se.meldrum.machine.http.JsonSupport._
   val route = restService.route
 
   "User route" should {
@@ -18,7 +20,7 @@ class UserSpec extends BaseSpec {
 
     "confirm that there is no test user when db is empty" in {
       Get("/v1/user") ~> route ~> check {
-        responseAs[String].contains("testuser") shouldEqual false
+        responseAs[UserNames] shouldEqual UserNames(Seq.empty[String])
       }
     }
 
@@ -38,7 +40,7 @@ class UserSpec extends BaseSpec {
 
     "retreive test user when one has been inserted" in {
       Get("/v1/user") ~> route ~> check {
-        responseAs[String].contains("testuser") shouldEqual true
+          responseAs[UserNames] shouldEqual UserNames(Seq("testuser"))
       }
     }
   }
