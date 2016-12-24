@@ -1,11 +1,14 @@
 package se.meldrum.machine.http.routes
 
 import akka.http.scaladsl.server.Directives._
+import org.postgresql.util.PSQLException
 import se.meldrum.machine.db.dao.UserDao
 import se.meldrum.machine.db.models.User
 import se.meldrum.machine.http.UserCreation
 import slick.driver.PostgresDriver.api._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 class UserRoute(implicit db: Database) {
 
@@ -23,15 +26,20 @@ class UserRoute(implicit db: Database) {
           entity(as[UserCreation]) { user=>
             // Hash the password before inserting it
             val u = User(None, user.name, user.password, user.email)
-            // Getting problems on duplicated user name "FIX"
-            onSuccess(dao.create(u).map(_.id)) {
-              case Some(i) => complete("User created")
-              case None => complete("ERROR")
+            complete(createUser(u))
             }
           }
         }
       }
-    }
 
+  def createUser(u: User): Future[String] = {
+    val result = dao.create(u)
+      .map {
+        case Success(u) => "User created"
+        case Failure(e: PSQLException) if e.getSQLState == "23505" => "User already exists"
+        case Failure(e) => e.getMessage
+      }
+    result
+  }
 
 }
