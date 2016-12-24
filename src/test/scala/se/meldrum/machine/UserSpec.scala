@@ -8,7 +8,7 @@ class UserSpec extends BaseSpec {
 
   val route = restService.route
 
-  "User Spec" should {
+  "User route" should {
 
     "not handle GET requests on invalid paths" in {
       Get("/nonexistingpath") ~> route ~> check {
@@ -22,33 +22,41 @@ class UserSpec extends BaseSpec {
       }
     }
 
-    "be able to create test user" in {
-      val jsonRequest = ByteString(
-        s"""
-           |{
-           |    "name":"testuser",
-           |    "password":"hashedsecret",
-           |    "email":"test@meldrum.se"
-           |}
-        """.stripMargin)
-
-      val postRequest = HttpRequest(
-        HttpMethods.POST,
-        uri = "/v1/user/create",
-        entity = HttpEntity(MediaTypes.`application/json`, jsonRequest)
-      )
-
+    "create test user" in {
+      val postRequest = createTestUser()
       postRequest ~> route ~> check {
         responseAs[String] shouldEqual "User created"
       }
     }
 
-    "be able to retreive test user when it has been inserted" in {
+    "notify of duplicated user" in {
+      val postRequest = createTestUser()
+      postRequest ~> route ~> check {
+        responseAs[String] shouldEqual "User already exists"
+      }
+    }
+
+    "retreive test user when one has been inserted" in {
       Get("/v1/user") ~> route ~> check {
         responseAs[String].contains("testuser") shouldEqual true
       }
     }
+  }
 
+  def createTestUser(): HttpRequest = {
+    val jsonRequest = ByteString(
+      s"""
+         |{
+         |    "name":"testuser",
+         |    "password":"hashedsecret",
+         |    "email":"test@meldrum.se"
+         |}
+        """.stripMargin)
 
+    HttpRequest(
+      HttpMethods.POST,
+      uri = "/v1/user/create",
+      entity = HttpEntity(MediaTypes.`application/json`, jsonRequest)
+    )
   }
 }
