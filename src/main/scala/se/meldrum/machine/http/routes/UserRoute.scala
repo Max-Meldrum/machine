@@ -24,8 +24,9 @@ class UserRoute(implicit db: Database) {
       path("create") {
         post {
           entity(as[UserCreation]) { user=>
-            // Hash the password before inserting it
-            val u = User(None, user.name, user.password, user.email)
+            import com.github.t3hnar.bcrypt._
+            val cryptedPass = user.password.bcrypt
+            val u = User(None, user.name, cryptedPass, user.email)
             complete(createUser(u))
             }
           }
