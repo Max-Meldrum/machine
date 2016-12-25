@@ -8,7 +8,7 @@ case class Task(title: String,
                 description: String,
                 deadline: DateTime,
                 priority: String,
-                userID: Option[Int] = None)
+                userID: Int)
 
 
 class Tasks(tag: Tag) extends Table[Task](tag, "tasks") {
@@ -17,7 +17,7 @@ class Tasks(tag: Tag) extends Table[Task](tag, "tasks") {
   def deadline = column[DateTime]("deadline")
   def priority = column[String]("priority")
   def userID = column[Int]("id")
-  def * = (title, description, deadline, priority, userID.?) <> (Task.tupled, Task.unapply)
+  def * = (title, description, deadline, priority, userID) <> (Task.tupled, Task.unapply)
 
   def user = foreignKey("user_fk", userID, TableQuery[Users])(_.id)
 }
