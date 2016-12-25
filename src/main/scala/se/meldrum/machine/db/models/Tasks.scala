@@ -8,7 +8,11 @@ case class Task(title: String,
                 description: String,
                 deadline: DateTime,
                 priority: String,
-                userID: Int)
+                userID: Int)  {
+  require(title.length < 200 && !title.isEmpty, "Non valid title")
+  require(description.length < 1500 && !description.isEmpty, "Non valid description")
+  require(priority == "High" || priority == "Medium" || priority == "Low")
+}
 
 
 class Tasks(tag: Tag) extends Table[Task](tag, "tasks") {

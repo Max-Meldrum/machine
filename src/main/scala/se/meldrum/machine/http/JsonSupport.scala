@@ -4,12 +4,9 @@ import spray.json._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.{DateTime, DateTimeZone}
+import se.meldrum.machine.db.models.Task
 
 object JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
-  implicit val taskCreationFormat = jsonFormat5(TaskCreation)
-  implicit val userCreationFormat = jsonFormat3(UserCreation)
-  implicit val userNamesFormat = jsonFormat1(UserNames)
-
   // To make Joda DateTime available
   // cred to suin
   implicit object DateTimeJsonFormat extends RootJsonFormat[DateTime] {
@@ -20,4 +17,7 @@ object JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
       case x           => deserializationError("Expected DateTime as JsString, but got " + x)
     }
   }
+  implicit val taskFormat = jsonFormat5(Task)
+  implicit val userCreationFormat = jsonFormat3(UserCreation)
+  implicit val userNamesFormat = jsonFormat1(UserNames)
 }
