@@ -45,7 +45,7 @@ class UserSpec extends BaseSpec {
     }
   }
 
-  def createTestUser(): HttpRequest = {
+  private def createTestUser(): HttpRequest = {
     val jsonRequest = ByteString(
       s"""
          |{

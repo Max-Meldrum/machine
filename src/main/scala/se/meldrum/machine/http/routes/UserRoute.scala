@@ -2,7 +2,7 @@ package se.meldrum.machine.http.routes
 
 import akka.http.scaladsl.server.Directives._
 import org.postgresql.util.PSQLException
-import se.meldrum.machine.db.dao.UserDao
+import se.meldrum.machine.dao.UserDao
 import se.meldrum.machine.db.models.User
 import se.meldrum.machine.http.UserCreation
 import slick.driver.PostgresDriver.api._
@@ -33,7 +33,7 @@ class UserRoute(implicit db: Database) {
         }
       }
 
-  def createUser(u: User): Future[String] = {
+  private def createUser(u: User): Future[String] = {
     val result = dao.create(u)
       .map {
         case Success(u) => "User created"

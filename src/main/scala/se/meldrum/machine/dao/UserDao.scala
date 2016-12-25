@@ -1,4 +1,4 @@
-package se.meldrum.machine.db.dao
+package se.meldrum.machine.dao
 
 import se.meldrum.machine.db.models.{User, Users}
 import se.meldrum.machine.http.UserNames

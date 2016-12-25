@@ -16,14 +16,14 @@ object Main extends App {
   else
     startServer
 
-  def startServer(): Unit = {
+  private def startServer(): Unit = {
     implicit val system = ActorSystem("machine")
     implicit val materializer = ActorMaterializer()
     val restService = new RestService()
     Http().bindAndHandle(restService.route, "localhost", 8080)
   }
 
-  def cmd(arg: String): Unit = {
+  private def cmd(arg: String): Unit = {
     val schema = new Schema()
 
     def go(arg: String): Unit = arg match {
