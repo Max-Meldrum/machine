@@ -1,15 +1,10 @@
 package se.meldrum.machine.db
 
-import se.meldrum.machine.db.models.{Tasks, Users}
 import slick.driver.PostgresDriver.api._
-
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class Schema(implicit db: Database) {
-
-  val users = TableQuery[Users]
-  val tasks = TableQuery[Tasks]
+class Schema(implicit db: Database) extends UserComponent with TaskComponent {
 
   def reset(): Unit = {
     val r = DBIO.seq(
