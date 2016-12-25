@@ -6,13 +6,12 @@ import se.meldrum.machine.dao.UserDao
 import se.meldrum.machine.db.models.User
 import se.meldrum.machine.http.UserCreation
 import slick.driver.PostgresDriver.api._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-class UserRoute(implicit db: Database) {
+class UserRoute(implicit db: Database, implicit val ec: ExecutionContext) {
 
-  val dao = new UserDao()
+  private val dao = new UserDao()
 
   import se.meldrum.machine.http.JsonSupport._
 
