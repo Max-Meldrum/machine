@@ -8,7 +8,6 @@ import se.meldrum.machine.http.UserNames
 class UserSpec extends BaseSpec {
 
   import se.meldrum.machine.http.JsonSupport._
-  val route = restService.route
 
   "User route" should {
 
@@ -24,41 +23,39 @@ class UserSpec extends BaseSpec {
       }
     }
 
-    "create test user" in {
-      val postRequest = createTestUser()
-      postRequest ~> route ~> check {
+    "create test users" in {
+      val postRequests = createTestUsers()
+
+      postRequests.map(req =>
+      req ~> route ~> check {
         responseAs[String] shouldEqual "User created"
-      }
+      })
     }
 
     "notify of duplicated user" in {
-      val postRequest = createTestUser()
+      val postRequest = createExistingUser()
       postRequest ~> route ~> check {
         responseAs[String] shouldEqual "User already exists"
       }
     }
 
-    "retreive test user when one has been inserted" in {
+    "retreive test users" in {
       Get("/v1/user") ~> route ~> check {
-          responseAs[UserNames] shouldEqual UserNames(Seq("testuser"))
+          responseAs[UserNames] shouldEqual UserNames(Seq("testuser", "testuser2", "testuser3"))
       }
     }
   }
 
-  private def createTestUser(): HttpRequest = {
+  private def createExistingUser(): HttpRequest = {
     val jsonRequest = ByteString(
       s"""
          |{
          |    "name":"testuser",
-         |    "password":"hashedsecret",
+         |    "password":"secret",
          |    "email":"test@meldrum.se"
          |}
         """.stripMargin)
 
-    HttpRequest(
-      HttpMethods.POST,
-      uri = "/v1/user/create",
-      entity = HttpEntity(MediaTypes.`application/json`, jsonRequest)
-    )
+    postRequest("/v1/user/create", jsonRequest)
   }
 }
