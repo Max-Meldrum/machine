@@ -1,4 +1,4 @@
-package se.meldrum.machine.db
+package se.meldrum.machine.db.components
 
 import se.meldrum.machine.db.models.Users
 import slick.lifted.TableQuery

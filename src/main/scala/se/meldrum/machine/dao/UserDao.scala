@@ -1,9 +1,10 @@
 package se.meldrum.machine.dao
 
-import se.meldrum.machine.db.UserComponent
+import se.meldrum.machine.db.components.UserComponent
 import se.meldrum.machine.db.models.User
 import se.meldrum.machine.http.UserNames
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 

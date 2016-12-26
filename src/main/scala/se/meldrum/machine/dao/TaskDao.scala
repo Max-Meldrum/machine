@@ -1,6 +1,6 @@
 package se.meldrum.machine.dao
 
-import se.meldrum.machine.db.TaskComponent
+import se.meldrum.machine.db.components.TaskComponent
 import se.meldrum.machine.db.models.Task
 import slick.driver.PostgresDriver.api._
 

@@ -1,6 +1,8 @@
 package se.meldrum.machine.db
 
+import se.meldrum.machine.db.components.{TaskComponent, UserComponent}
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
