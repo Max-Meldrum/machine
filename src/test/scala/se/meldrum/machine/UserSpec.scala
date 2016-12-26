@@ -17,7 +17,7 @@ class UserSpec extends BaseSpec {
       }
     }
 
-    "confirm that there is no test user when db is empty" in {
+    "confirm that there are no test users when db is empty" in {
       Get("/v1/user") ~> route ~> check {
         responseAs[UserNames] shouldEqual UserNames(Seq.empty[String])
       }
@@ -39,7 +39,7 @@ class UserSpec extends BaseSpec {
       }
     }
 
-    "retreive test users" in {
+    "retrieve test users" in {
       Get("/v1/user") ~> route ~> check {
           responseAs[UserNames] shouldEqual UserNames(Seq("testuser", "testuser2", "testuser3"))
       }
