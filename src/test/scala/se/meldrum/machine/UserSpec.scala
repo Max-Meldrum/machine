@@ -1,7 +1,6 @@
 package se.meldrum.machine
 
 import akka.http.scaladsl.model._
-import akka.util.ByteString
 import akka.http.scaladsl.unmarshalling.Unmarshaller._
 import se.meldrum.machine.http.UserNames
 
@@ -25,7 +24,6 @@ class UserSpec extends BaseSpec {
 
     "create test users" in {
       val postRequests = createTestUsers()
-
       postRequests.map(req =>
       req ~> route ~> check {
         responseAs[String] shouldEqual "User created"
@@ -47,15 +45,7 @@ class UserSpec extends BaseSpec {
   }
 
   private def createExistingUser(): HttpRequest = {
-    val jsonRequest = ByteString(
-      s"""
-         |{
-         |    "name":"testuser",
-         |    "password":"secret",
-         |    "email":"test@meldrum.se"
-         |}
-        """.stripMargin)
-
-    postRequest("/v1/user/create", jsonRequest)
+    val duplicatedUser = userJsonRequest("testuser", "secret", "test@meldrum.se")
+    postRequest("/v1/user/create", duplicatedUser)
   }
 }

@@ -29,33 +29,22 @@ trait BaseSpec extends WordSpec with Matchers with ScalatestRouteTest {
       entity = HttpEntity(MediaTypes.`application/json`, json)
     )
 
+
+  def userJsonRequest(name: String, pass: String, email: String): ByteString =
+    ByteString(
+      s"""
+       |{
+       |    "name":"$name",
+       |    "password":"$pass",
+       |    "email":"$email"
+       |}
+        """.stripMargin)
+
+
   def createTestUsers(): Seq[HttpRequest] = {
-    val userOne = ByteString(
-      s"""
-         |{
-         |    "name":"testuser",
-         |    "password":"secret",
-         |    "email":"test@meldrum.se"
-         |}
-        """.stripMargin)
-
-    val userTwo = ByteString(
-      s"""
-         |{
-         |    "name":"testuser2",
-         |    "password":"secret",
-         |    "email":"test2@meldrum.se"
-         |}
-        """.stripMargin)
-
-    val userThree = ByteString(
-      s"""
-         |{
-         |    "name":"testuser3",
-         |    "password":"secret",
-         |    "email":"test3@meldrum.se"
-         |}
-        """.stripMargin)
+    val userOne = userJsonRequest("testuser", "secret", "test@meldrum.se")
+    val userTwo = userJsonRequest("testuser2", "secret", "test2@meldrum.se")
+    val userThree = userJsonRequest("testuser3", "secret", "test3@meldrum.se")
 
     val requests = Seq(
       postRequest("/v1/user/create", userOne),
