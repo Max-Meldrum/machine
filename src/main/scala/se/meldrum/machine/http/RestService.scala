@@ -13,8 +13,8 @@ class RestService(implicit val system: ActorSystem,
                   implicit val db: Database,
                   implicit val ec: ExecutionContext) {
 
-  val userRoute = new UserRoute()
-  val taskRoute = new TaskRoute()
+  private val userRoute = new UserRoute()
+  private val taskRoute = new TaskRoute()
 
   val route =
     pathPrefix("v1") {
