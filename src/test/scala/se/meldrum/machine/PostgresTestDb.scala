@@ -1,7 +1,5 @@
 package se.meldrum.machine
 
-import com.typesafe.config.ConfigFactory
-import de.flapdoodle.embed.process.runtime.Network._
 import ru.yandex.qatools.embed.postgresql.PostgresStarter
 import ru.yandex.qatools.embed.postgresql.config.AbstractPostgresConfig.{Credentials, Net, Storage, Timeout}
 import ru.yandex.qatools.embed.postgresql.config.PostgresConfig
@@ -11,16 +9,7 @@ import slick.driver.PostgresDriver.api._
 
 // Cred to ArchDev
 // Slightly changed
-
-object PostgresTestDb {
-
-  val host = getLocalHost.getHostAddress
-  val port = ConfigFactory.load().getInt("postgres-test.port")
-  val dbName = ConfigFactory.load().getString("postgres-test.dbname")
-  val user = ConfigFactory.load().getString("postgres-test.user")
-  val password = ConfigFactory.load().getString("postgres-test.password")
-  val url = ConfigFactory.load().getString("postgres-test.url")
-
+object PostgresTestDb extends PsqlTestConfig {
 
   lazy val dbProcess = {
     val psqlConfig = new PostgresConfig(

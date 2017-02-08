@@ -21,7 +21,6 @@ trait BaseSpec extends WordSpec with Matchers with ScalatestRouteTest {
   implicit val mat = ActorMaterializer()
   val restService = new RestService()
   val route = restService.route
-  Http().bindAndHandle(restService.route, "localhost", 0)
 
   def postRequest(path: String, json: ByteString): HttpRequest =
     HttpRequest(HttpMethods.POST,

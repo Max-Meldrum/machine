@@ -1,8 +1,10 @@
 package se.meldrum.machine
 
+import se.meldrum.machine.db.models.Task
+
 class TaskSpec extends BaseSpec {
 
-  private val route = restService.route
+  import se.meldrum.machine.http.JsonSupport._
 
   "Task route " should {
     "not handle GET requests on invalid paths" in {
@@ -10,6 +12,14 @@ class TaskSpec extends BaseSpec {
         handled shouldBe false
       }
     }
+
+    /*
+    "confirm that there are no tasks when db is empty" in {
+      Get("/v1/task") ~> route ~> check {
+        responseAs[Task] shouldEqual List[Task]()
+      }
+    }
+    */
   }
 
 }
