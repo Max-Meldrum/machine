@@ -4,8 +4,9 @@ import akka.http.scaladsl.server.Directives._
 import org.postgresql.util.PSQLException
 import se.meldrum.machine.dao.UserDao
 import se.meldrum.machine.db.models.User
-import se.meldrum.machine.http.UserCreation
+import se.meldrum.machine.http.{UserCreation, UserRemoval}
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
@@ -29,12 +30,18 @@ class UserRoute(implicit db: Database, implicit val ec: ExecutionContext) {
             complete(createUser(u))
             }
           }
+        }~
+      path("delete") {
+        post {
+          entity(as[UserRemoval]) { userInfo =>
+            complete("hej")
+          }
         }
       }
+    }
 
   private def createUser(u: User): Future[String] = {
-    val result = dao.create(u)
-      .map {
+    val result = dao.create(u).map {
         case Success(u) => "User created"
         case Failure(e: PSQLException) if e.getSQLState == "23505" => "User already exists"
         case Failure(e) => e.getMessage

@@ -5,10 +5,12 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import se.meldrum.machine.db.Schema
 import se.meldrum.machine.http.RestService
+import se.meldrum.machine.utils.HttpConfig
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.ExecutionContext
 
-object Main extends App {
+object Main extends App with HttpConfig {
 
   implicit val db = Database.forConfig("postgres")
 
@@ -22,7 +24,7 @@ object Main extends App {
     implicit val ec: ExecutionContext = system.dispatcher
     implicit val materializer = ActorMaterializer()
     val restService = new RestService()
-    Http().bindAndHandle(restService.route, "localhost", 8080)
+    Http().bindAndHandle(restService.route, interface , port)
   }
 
   private def cmd(arg: String): Unit = {

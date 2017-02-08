@@ -15,6 +15,11 @@ class TaskRoute(implicit db: Database, implicit val ec: ExecutionContext) {
 
   val route =
     pathPrefix("task") {
+      pathPrefix(IntNumber) { id =>
+        get {
+          complete(dao.getTasks(id))
+        }
+      }~
       path("create") {
         post {
           entity(as[Task]) { task =>
@@ -25,11 +30,10 @@ class TaskRoute(implicit db: Database, implicit val ec: ExecutionContext) {
     }
 
   private def createTask(t: Task): Future[String] = {
-    val result = dao.create(t)
-      .map {
+    val result = dao.create(t).map {
         case Success(t) => "Created task"
         case Failure(e) => e.getMessage
-      }
+    }
     result
   }
 }

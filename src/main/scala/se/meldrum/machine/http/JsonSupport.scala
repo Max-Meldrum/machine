@@ -20,4 +20,5 @@ object JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val taskFormat = jsonFormat5(Task)
   implicit val userCreationFormat = jsonFormat3(UserCreation)
   implicit val userNamesFormat = jsonFormat1(UserNames)
+  implicit val userRemovalFormat = jsonFormat2(UserRemoval)
 }
